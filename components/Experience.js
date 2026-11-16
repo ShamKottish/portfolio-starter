@@ -66,7 +66,7 @@ function Item({ date, hidden, children }) {
   return (
     <li className="tl-item" hidden={hidden}>
       <span className="tl-node" aria-hidden="true" />
-      <p className="label tl-date ps-8 md:ps-0">{date}</p>
+      <p className="label tl-date ps-[1.6rem] md:ps-0">{date}</p>
       <div className="tl-body mt-1.5 md:mt-0">{children}</div>
     </li>
   );

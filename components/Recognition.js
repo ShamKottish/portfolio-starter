@@ -92,15 +92,15 @@ function Talks() {
       <SubHead count={cv.talksNote}>{ui.recognition.speaking}</SubHead>
       <ul className="mt-2">
         {cv.talks.map((t) => (
-          <li key={t.title} className="grid grid-cols-[6.5rem_1fr_auto] items-baseline gap-x-4 border-b border-rule py-4">
-            <span className="label label-rose">{type(t.type)}</span>
-            <div dir="auto" lang="en">
+          <li key={t.title} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[6.5rem_1fr_auto]">
+            <span className="label label-rose order-1">{type(t.type)}</span>
+            <div dir="auto" lang="en" className="order-3 col-span-2 sm:order-2 sm:col-span-1">
               <h4 className="font-serif text-[1.1rem] font-[450] leading-snug">{t.title}</h4>
               <p className="t-small">
                 {t.event} · {t.place}
               </p>
             </div>
-            <span className="label num">{t.year}</span>
+            <span className="label num order-2 sm:order-3">{t.year}</span>
           </li>
         ))}
       </ul>
@@ -110,9 +110,9 @@ function Talks() {
       </SubHead>
       <ul className="mt-2">
         {cv.media.map((m) => (
-          <li key={m.title} className="grid grid-cols-[6.5rem_1fr_auto] items-baseline gap-x-4 border-b border-rule py-4">
-            <span className="label label-rose">{type(m.type)}</span>
-            <div dir="auto" lang="en">
+          <li key={m.title} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[6.5rem_1fr_auto]">
+            <span className="label label-rose order-1">{type(m.type)}</span>
+            <div dir="auto" lang="en" className="order-3 col-span-2 sm:order-2 sm:col-span-1">
               <h4 className="font-serif text-[1.1rem] font-[450] leading-snug">
                 {m.href ? (
                   <a href={m.href} className="link">
@@ -124,7 +124,7 @@ function Talks() {
               </h4>
               <p className="t-small">{m.where}</p>
             </div>
-            <span className="label num">{m.year}</span>
+            <span className="label num order-2 sm:order-3">{m.year}</span>
           </li>
         ))}
       </ul>
@@ -161,7 +161,7 @@ function Certifications() {
             </h4>
             <p className="t-small mt-0.5">{c.issuer}</p>
             <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-              <span className="label num">{c.year}</span>
+              {c.status !== "progress" && <span className="label num">{c.year}</span>}
               <span className={`chip !py-0 !text-[12px] ${chip[c.status]}`}>
                 {c.status === "expired" ? ui.recognition.expired(c.expired) : ui.recognition.status[c.status]}
               </span>
@@ -241,7 +241,7 @@ export default function Recognition() {
       <div
         role="tablist"
         aria-label={ui.recognition.title}
-        className="-mx-5 mb-8 flex gap-6 overflow-x-auto border-b border-rule px-5 sm:mx-0 sm:px-0"
+        className="-mx-5 mb-8 flex gap-6 overflow-x-auto border-b border-rule px-5 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
         onKeyDown={onKeyDown}
       >
         {TABS.map((id) => {
