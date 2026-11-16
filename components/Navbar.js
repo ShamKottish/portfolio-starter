@@ -111,7 +111,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className="progress pointer-events-none absolute inset-x-0 -bottom-px h-px scale-x-0 bg-rose" aria-hidden="true" />
+      <div className="progress pointer-events-none absolute inset-x-0 -bottom-px h-px bg-rose" aria-hidden="true" />
 
       {open && (
         <div

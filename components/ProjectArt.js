@@ -129,7 +129,7 @@ const art = {
 
 export default function ProjectArt({ name, className = "" }) {
   return (
-    <div className={`art hatch ${className}`} aria-hidden="true">
+    <div className={`art hatch overflow-hidden ${className}`} aria-hidden="true">
       <svg viewBox="0 0 360 200" preserveAspectRatio="xMidYMid meet" role="presentation">
         {art[name]}
       </svg>

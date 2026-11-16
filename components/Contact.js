@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useI18n } from "./I18n";
 import Section from "./Section";
 import Arrow from "./Arrow";
+import Reveal from "./Reveal";
 
 export default function Contact() {
   const { cv, ui } = useI18n();
@@ -23,11 +24,11 @@ export default function Contact() {
 
   return (
     <Section id="contact" num="06" title={ui.contact.title} kicker={ui.contact.kicker}>
-      <p className="t-h1 max-w-[16ch]">
+      <Reveal as="p" delay={80} className="t-h1 max-w-[16ch]">
         {pre}
         <span className="accent">{accent}</span>
         {post}
-      </p>
+      </Reveal>
 
       <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
         <a href={`mailto:${c.email}`} className="link font-serif text-[clamp(1.05rem,0.55rem+2.7vw,2rem)] [overflow-wrap:anywhere]" dir="ltr">

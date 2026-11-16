@@ -58,7 +58,9 @@ export const viewport = {
 };
 
 // Runs before first paint so the page never flashes the wrong theme.
-const bootTheme = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}`;
+// It also flags that scroll-reveal may hide things until they are seen (`js-motion`); if React
+// has not started within 6s the flag is dropped so nothing can stay hidden.
+const bootTheme = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}var h=document.documentElement;h.classList.add("js-motion");setTimeout(function(){if(!window.__motionReady)h.classList.remove("js-motion")},6000);`;
 
 export default function RootLayout({ children }) {
   const fonts = [fraunces, instrument, plexMono, amiri, plexArabic].map((f) => f.variable).join(" ");
@@ -66,7 +68,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr" data-theme="light" className={fonts} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: bootTheme }} />
+        <script dangerouslySetInnerHTML={{ __html: bootTheme }} suppressHydrationWarning />
       </head>
       <body className="flex min-h-screen flex-col">
         <I18nProvider>

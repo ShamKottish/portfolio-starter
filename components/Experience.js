@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { useI18n } from "./I18n";
 import Section, { SubHead } from "./Section";
+import Reveal from "./Reveal";
 import Arrow from "./Arrow";
 
 // ── career chart ────────────────────────────────────────────
@@ -13,9 +14,11 @@ const pct = (year) => ((year - START) / (END - START)) * 100;
 
 function CareerChart() {
   const { cv, ui } = useI18n();
+  // bars grow in chronological order, 60ms apart
+  const order = [...cv.timeline].sort((a, b) => a.from - b.from).map((r) => r.key);
 
   return (
-    <figure className="mb-14" aria-hidden="true">
+    <Reveal as="figure" group className="mb-14" aria-hidden="true">
       <div className="flex items-center justify-between gap-4 pb-3">
         <figcaption className="label label-rose">{ui.experience.glance}</figcaption>
         <p className="label flex items-center gap-4">
@@ -50,14 +53,18 @@ function CareerChart() {
             <span className="label truncate !text-[10.5px]">{row.label}</span>
             <div className="relative h-full">
               <span
-                className={`absolute top-1/2 h-[9px] -translate-y-1/2 rounded-[1px] ${row.kind === "work" ? "bg-rose" : "bg-sage"}`}
-                style={{ insetInlineStart: `${pct(row.from)}%`, width: `${pct(row.to) - pct(row.from)}%` }}
+                className={`bar absolute top-1/2 h-[9px] -translate-y-1/2 rounded-[1px] ${row.kind === "work" ? "bg-rose" : "bg-sage"}`}
+                style={{
+                  insetInlineStart: `${pct(row.from)}%`,
+                  width: `${pct(row.to) - pct(row.from)}%`,
+                  "--i": order.indexOf(row.key),
+                }}
               />
             </div>
           </div>
         ))}
       </div>
-    </figure>
+    </Reveal>
   );
 }
 

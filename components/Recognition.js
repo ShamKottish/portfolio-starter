@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useI18n } from "./I18n";
 import Section, { SubHead } from "./Section";
+import Reveal from "./Reveal";
 
 const ROMAN = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii"];
 const TABS = ["awards", "patents", "publications", "talks", "certifications", "community"];
@@ -13,7 +14,7 @@ function Awards() {
   return (
     <ol className="border-t border-rule">
       {cv.awards.map((a, i) => (
-        <li key={a.title} className="grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 border-b border-rule py-5">
+        <Reveal as="li" i={i} key={a.title} className="grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 border-b border-rule py-5">
           <span className="font-serif text-lg italic text-rose" style={{ fontVariationSettings: '"WONK" 1' }}>
             {ROMAN[i]}.
           </span>
@@ -24,7 +25,7 @@ function Awards() {
             </p>
           </div>
           <span className="label num">{a.year}</span>
-        </li>
+        </Reveal>
       ))}
     </ol>
   );
@@ -34,10 +35,10 @@ function Patents() {
   const { cv } = useI18n();
   return (
     <ul className="border-t border-rule">
-      {cv.patents.map((p) => {
+      {cv.patents.map((p, i) => {
         const granted = p.state === "granted";
         return (
-          <li key={p.number} className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 border-b border-rule py-6">
+          <Reveal as="li" i={i} key={p.number} className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 border-b border-rule py-6">
             <div className="max-w-[34rem]">
               <h4 className="t-h3 !text-[1.3rem]">{p.title}</h4>
               <p className="label mt-2">
@@ -50,7 +51,7 @@ function Patents() {
                 {p.status}
               </span>
             </div>
-          </li>
+          </Reveal>
         );
       })}
     </ul>
@@ -69,7 +70,7 @@ function Publications() {
       </div>
       <ol className="mt-3 border-t border-rule">
         {cv.publications.map((p, i) => (
-          <li key={p.title} className="grid grid-cols-[2.5rem_1fr_auto] gap-x-4 border-b border-rule py-5">
+          <Reveal as="li" i={i} key={p.title} className="grid grid-cols-[2.5rem_1fr_auto] gap-x-4 border-b border-rule py-5">
             <span className="label pt-1.5 num">{String(i + 1).padStart(2, "0")}</span>
             <div dir="auto" lang="en">
               <h4 className="font-serif text-[1.15rem] font-[450] leading-snug">{p.title}</h4>
@@ -77,7 +78,7 @@ function Publications() {
               <p className="t-small italic">{p.venue}</p>
             </div>
             <span className="label num">{p.year}</span>
-          </li>
+          </Reveal>
         ))}
       </ol>
     </>
@@ -91,8 +92,8 @@ function Talks() {
     <>
       <SubHead count={cv.talksNote}>{ui.recognition.speaking}</SubHead>
       <ul className="mt-2">
-        {cv.talks.map((t) => (
-          <li key={t.title} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[6.5rem_1fr_auto]">
+        {cv.talks.map((t, i) => (
+          <Reveal as="li" i={i} key={t.title} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[6.5rem_1fr_auto]">
             <span className="label label-rose order-1">{type(t.type)}</span>
             <div dir="auto" lang="en" className="order-3 col-span-2 sm:order-2 sm:col-span-1">
               <h4 className="font-serif text-[1.1rem] font-[450] leading-snug">{t.title}</h4>
@@ -101,7 +102,7 @@ function Talks() {
               </p>
             </div>
             <span className="label num order-2 sm:order-3">{t.year}</span>
-          </li>
+          </Reveal>
         ))}
       </ul>
 
@@ -109,8 +110,8 @@ function Talks() {
         {ui.recognition.media}
       </SubHead>
       <ul className="mt-2">
-        {cv.media.map((m) => (
-          <li key={m.title} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[6.5rem_1fr_auto]">
+        {cv.media.map((m, i) => (
+          <Reveal as="li" i={i} key={m.title} className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5 border-b border-rule py-4 sm:grid-cols-[6.5rem_1fr_auto]">
             <span className="label label-rose order-1">{type(m.type)}</span>
             <div dir="auto" lang="en" className="order-3 col-span-2 sm:order-2 sm:col-span-1">
               <h4 className="font-serif text-[1.1rem] font-[450] leading-snug">
@@ -125,7 +126,7 @@ function Talks() {
               <p className="t-small">{m.where}</p>
             </div>
             <span className="label num order-2 sm:order-3">{m.year}</span>
-          </li>
+          </Reveal>
         ))}
       </ul>
     </>
@@ -154,8 +155,8 @@ function Certifications() {
       </div>
 
       <ul className="mt-4 grid gap-x-10 border-t border-rule md:grid-cols-2">
-        {list.map((c) => (
-          <li key={c.name} className="border-b border-rule py-4" dir="auto" lang="en">
+        {list.map((c, i) => (
+          <Reveal as="li" i={i} key={c.name} className="border-b border-rule py-4" dir="auto" lang="en">
             <h4 className={`font-serif text-[1.05rem] font-[450] leading-snug ${c.status === "expired" ? "text-ink-2" : ""}`}>
               {c.name}
             </h4>
@@ -168,7 +169,7 @@ function Certifications() {
               {c.id && <span className="label !text-[10.5px] normal-case">{c.id}</span>}
               {c.note && <span className="label !text-[10.5px]">{c.note}</span>}
             </p>
-          </li>
+          </Reveal>
         ))}
       </ul>
     </>
@@ -179,8 +180,8 @@ function Community() {
   const { cv } = useI18n();
   return (
     <ul className="border-t border-rule">
-      {cv.community.map((c) => (
-        <li key={c.role + c.org} className="grid gap-x-8 gap-y-1 border-b border-rule py-6 md:grid-cols-[13rem_1fr]">
+      {cv.community.map((c, i) => (
+        <Reveal as="li" i={i} key={c.role + c.org} className="grid gap-x-8 gap-y-1 border-b border-rule py-6 md:grid-cols-[13rem_1fr]">
           <p className="label pt-1.5">
             <span className="num">{c.period}</span>
           </p>
@@ -191,7 +192,7 @@ function Community() {
             </p>
             <p className="t-small mt-2 max-w-[56ch] !text-[15px]">{c.detail}</p>
           </div>
-        </li>
+        </Reveal>
       ))}
     </ul>
   );

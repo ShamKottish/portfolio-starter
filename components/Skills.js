@@ -2,6 +2,7 @@
 
 import { useI18n } from "./I18n";
 import Section from "./Section";
+import Reveal from "./Reveal";
 
 const MAX_YEARS = 18;
 const tone = {
@@ -41,10 +42,10 @@ export default function Skills() {
             </div>
 
             <ul className="mt-4 flex flex-wrap gap-2">
-              {s.items.map((item) => (
-                <li key={item} className={`chip ${tone[s.tier].chip}`}>
+              {s.items.map((item, i) => (
+                <Reveal as="li" i={i} key={item} className={`chip ${tone[s.tier].chip}`}>
                   {item}
-                </li>
+                </Reveal>
               ))}
             </ul>
           </div>

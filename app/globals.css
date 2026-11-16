@@ -18,6 +18,7 @@
   --rose-wash: #f0ddd3;
   --sage-wash: #e3e5d6;
   --on-rose: #fbf7f1;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 [data-theme="dark"] {
@@ -100,15 +101,6 @@ html[dir="rtl"] {
   outline: 2px solid var(--rose);
   outline-offset: 3px;
   border-radius: 2px;
-}
-
-html.theme-fade *,
-html.theme-fade *::before,
-html.theme-fade *::after {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease !important;
 }
 
 .wrap {
@@ -425,32 +417,54 @@ button.chip[aria-selected="true"] {
   background: var(--card);
   border: 1px solid var(--rule);
   transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease;
+    transform 0.18s var(--ease),
+    box-shadow 0.18s var(--ease),
+    border-color 0.18s var(--ease);
 }
+/* hover and keyboard focus (focus-visible) behave the same */
 .card:hover,
-.card:focus-within {
-  transform: translate(-3px, -3px);
-  box-shadow: 6px 6px 0 var(--rose-wash);
+.card:has(:focus-visible) {
+  box-shadow: 7px 8px 0 var(--rose-wash);
   border-color: var(--rule-strong);
 }
 [dir="rtl"] .card:hover,
-[dir="rtl"] .card:focus-within {
-  transform: translate(3px, -3px);
-  box-shadow: -6px 6px 0 var(--rose-wash);
+[dir="rtl"] .card:has(:focus-visible) {
+  box-shadow: -7px 8px 0 var(--rose-wash);
 }
 .card .go {
   display: inline-block;
   color: var(--rose);
   opacity: 0;
-  transform: translateX(-6px);
-  transition: all 0.18s ease;
+  transition: opacity 0.18s var(--ease);
 }
 .card:hover .go,
-.card:focus-within .go {
+.card:has(:focus-visible) .go {
   opacity: 1;
-  transform: none;
+}
+.card .arrow {
+  transition: transform 0.18s var(--ease);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover,
+  .card:has(:focus-visible) {
+    transform: translateY(-3px);
+  }
+  .card .art svg {
+    transition: transform 0.18s var(--ease);
+  }
+  .card:hover .art svg,
+  .card:has(:focus-visible) .art svg {
+    transform: scale(1.03);
+  }
+  /* nudge 4px in the reading direction (the arrow itself is mirrored in RTL) */
+  .card:hover .arrow,
+  .card:has(:focus-visible) .arrow {
+    transform: translateX(4px);
+  }
+  [dir="rtl"] .card:hover .arrow,
+  [dir="rtl"] .card:has(:focus-visible) .arrow {
+    transform: translateX(-4px);
+  }
 }
 
 /* line illustrations on the hatch plates */
@@ -611,7 +625,7 @@ input[type="range"]::-moz-range-thumb {
 @keyframes settle {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -634,6 +648,42 @@ input[type="range"]::-moz-range-thumb {
   .pen {
     animation: draw 0.9s 0.9s cubic-bezier(0.5, 0, 0.2, 1) both;
   }
+
+  /* Scroll-reveal. Only hides anything when <html> carries .js-motion (set by the inline
+     script in layout.js and dropped again if React never starts), and only until the
+     element has been seen once. List items stagger 40ms apart via --i (capped in JS). */
+  .js-motion [data-reveal]:not([data-reveal="group"]):not(.is-in) {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .js-motion [data-reveal]:not([data-reveal="group"]).is-in {
+    animation: settle 0.6s var(--ease) calc(var(--d, 0ms) + var(--i, 0) * 40ms) backwards;
+  }
+
+  /* career chart: bars grow from their start edge, 60ms apart in chronological order */
+  .bar {
+    transform-origin: left center;
+  }
+  [dir="rtl"] .bar {
+    transform-origin: right center;
+  }
+  .js-motion [data-reveal="group"]:not(.is-in) .bar {
+    transform: scaleX(0);
+  }
+  .js-motion [data-reveal="group"].is-in .bar {
+    animation: bar 0.7s var(--ease) calc(var(--i, 0) * 60ms) backwards;
+  }
+
+  /* theme / language switch: soft cross-fade */
+  ::view-transition-group(root) {
+    animation-duration: 0.25s;
+    animation-timing-function: var(--ease);
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.25s;
+    animation-timing-function: var(--ease);
+  }
   [dir="rtl"] .pen {
     animation-name: draw-rtl;
   }
@@ -642,6 +692,14 @@ input[type="range"]::-moz-range-thumb {
       animation: grow linear both;
       animation-timeline: scroll(root);
     }
+  }
+}
+@keyframes bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
   }
 }
 @keyframes draw-rtl {
@@ -661,6 +719,7 @@ input[type="range"]::-moz-range-thumb {
   }
 }
 .progress {
+  transform: scaleX(0);
   transform-origin: left center;
 }
 [dir="rtl"] .progress {
@@ -688,5 +747,14 @@ input[type="range"]::-moz-range-thumb {
   }
   .section {
     break-inside: avoid-page;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .bar {
+    transform: none !important;
+    animation: none !important;
   }
 }

@@ -2,6 +2,8 @@
 
 import { useI18n } from "./I18n";
 import Section, { SubHead } from "./Section";
+import Reveal from "./Reveal";
+import CountUp from "./CountUp";
 
 export default function About() {
   const { cv, ui } = useI18n();
@@ -9,16 +11,16 @@ export default function About() {
 
   return (
     <Section id="about" num="01" title={ui.about.title} kicker={ui.about.kicker}>
-      <p className="t-lead max-w-[38ch]">
+      <Reveal as="p" delay={80} className="t-lead max-w-[38ch]">
         <span className="accent">{lead.slice(0, 1)}</span>
         {lead.slice(1)}
-      </p>
+      </Reveal>
 
       <div className="mt-9 grid gap-x-10 gap-y-5 md:grid-cols-2">
-        {paragraphs.map((p) => (
-          <p key={p} className="text-[16px] leading-[26px] text-ink-2 rtl:leading-8">
+        {paragraphs.map((p, i) => (
+          <Reveal as="p" key={p} delay={160 + i * 80} className="text-[16px] leading-[26px] text-ink-2 rtl:leading-8">
             {p}
-          </p>
+          </Reveal>
         ))}
       </div>
 
@@ -33,7 +35,7 @@ export default function About() {
               <span className="label mt-1.5 block !text-[10.5px]">{h.note}</span>
             </dt>
             <dd className="font-serif text-[2.6rem] font-light leading-none tracking-tight">
-              <span className="num">{h.value}</span>
+              <CountUp value={h.value} />
             </dd>
           </div>
         ))}
