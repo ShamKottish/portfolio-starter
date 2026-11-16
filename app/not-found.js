@@ -1,12 +1,7 @@
-import Link from "next/link";
+import NotFoundView from "@/components/NotFoundView";
+
+export const metadata = { title: "Not found" };
 
 export default function NotFound() {
-  return (
-    <div className="py-24 text-center">
-      <h1 className="text-3xl font-bold">Page not found</h1>
-      <Link href="/" className="mt-4 inline-block underline">
-        Go home
-      </Link>
-    </div>
-  );
+  return <NotFoundView />;
 }

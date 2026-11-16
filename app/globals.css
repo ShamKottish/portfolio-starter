@@ -1,16 +1,677 @@
 @import "tailwindcss";
 
-/* TODO: define your own colors here and use them as Tailwind classes,
-   e.g. --color-brand: #2f5bd9;  ->  className="text-brand bg-brand" */
-@theme {
-  --color-brand: #2f5bd9;
+/* ── Colour: "Ink, paper & rosewood" ─────────────────────────── */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --paper: #f6f1ea;
+  --ink: #2a1f2d;
+  --rose: #a8452f;
+  --sage: #5e6b4f;
+  --paper-2: #efe7dc;
+  --card: #fbf7f1;
+  --ink-2: #5b4a57;
+  --ink-3: #76656f;
+  --rule: #dccfc0;
+  --rule-strong: #c4b3a2;
+  --rose-hover: #8e3826;
+  --rose-wash: #f0ddd3;
+  --sage-wash: #e3e5d6;
+  --on-rose: #fbf7f1;
 }
 
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #1a1418;
+  --ink: #f1e7da;
+  --rose: #e3906f;
+  --sage: #a9b791;
+  --paper-2: #211920;
+  --card: #241c22;
+  --ink-2: #c8b8b0;
+  --ink-3: #a6948f;
+  --rule: #3a2e36;
+  --rule-strong: #54444e;
+  --rose-hover: #eda588;
+  --rose-wash: #3a231f;
+  --sage-wash: #262a20;
+  --on-rose: #1a1418;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-rose: var(--rose);
+  --color-sage: var(--sage);
+  --color-paper-2: var(--paper-2);
+  --color-card: var(--card);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-rose-hover: var(--rose-hover);
+  --color-rose-wash: var(--rose-wash);
+  --color-sage-wash: var(--sage-wash);
+  --color-on-rose: var(--on-rose);
+
+  /* Latin first, Arabic font picks up whatever Latin can't draw */
+  --font-serif: var(--font-fraunces), var(--font-amiri), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-instrument), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), var(--font-plex-arabic), ui-monospace, monospace;
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: #ffffff;
-  color: #171717;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 27px;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--rose-wash);
+  color: var(--ink);
+}
+
+html {
+  --date-col: 10.5rem;
+}
+html[dir="rtl"] {
+  --date-col: 13rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease !important;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* ── Type scale ──────────────────────────────────────────────── */
+.t-display {
+  font-family: var(--font-serif);
+  font-weight: 380;
+  font-size: clamp(3.25rem, 1.2rem + 6.2vw, 6rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 144;
+}
+.t-h1 {
+  font-family: var(--font-serif);
+  font-weight: 350;
+  font-size: clamp(2.75rem, 1.2rem + 4.4vw, 4rem);
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 144;
+}
+.t-numeral {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.25rem, 1.5rem + 2vw, 2.75rem);
+  line-height: 1;
+  color: var(--rose);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+.t-lead {
+  font-family: var(--font-serif);
+  font-weight: 350;
+  font-size: clamp(1.5625rem, 1rem + 1.6vw, 2.125rem);
+  line-height: 1.32;
+  font-variation-settings: "opsz" 48;
+}
+.t-h2 {
+  font-family: var(--font-serif);
+  font-weight: 420;
+  font-size: clamp(1.75rem, 1.4rem + 0.8vw, 1.875rem);
+  line-height: 1.1;
+  font-variation-settings: "opsz" 48;
+}
+.t-h3 {
+  font-family: var(--font-serif);
+  font-weight: 450;
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  line-height: 1.25;
+  font-variation-settings: "opsz" 36;
+}
+.t-h3 em,
+.t-company {
+  font-style: italic;
+  font-weight: 350;
+  color: var(--ink-2);
+}
+.t-body {
+  font-size: 17px;
+  line-height: 27px;
+  max-width: 68ch;
+}
+.t-small {
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--ink-2);
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+.label-rose {
+  color: var(--rose);
+}
+
+/* the italic word in every headline */
+.accent {
+  font-style: italic;
+  color: var(--rose);
+  font-weight: inherit;
+  font-variation-settings: "WONK" 1, "SOFT" 60;
+}
+
+/* Arabic never gets tracking, and wants more air between lines */
+[dir="rtl"] .t-display,
+[dir="rtl"] .t-h1,
+[dir="rtl"] .t-lead,
+[dir="rtl"] .t-h2,
+[dir="rtl"] .t-h3,
+[dir="rtl"] .label,
+[dir="rtl"] .btn,
+[dir="rtl"] .chip {
+  letter-spacing: 0;
+}
+[dir="rtl"] .label {
+  text-transform: none;
+  font-size: 13px;
+}
+[dir="rtl"] .t-display {
+  font-size: clamp(2.6rem, 1rem + 4.6vw, 4.6rem);
+  line-height: 1.25;
+  font-weight: 400;
+}
+[dir="rtl"] body {
+  font-size: 18px;
+}
+[dir="rtl"] .t-lead {
+  font-size: clamp(1.4rem, 1rem + 1.2vw, 1.95rem);
+}
+[dir="rtl"] .t-h1 {
+  line-height: 1.3;
+  font-weight: 400;
+}
+[dir="rtl"] .t-lead {
+  line-height: 1.7;
+}
+[dir="rtl"] .t-h2,
+[dir="rtl"] .t-h3 {
+  line-height: 1.45;
+}
+[dir="rtl"] .t-body,
+[dir="rtl"] .t-small {
+  line-height: 1.85;
+}
+[dir="rtl"] .accent,
+[dir="rtl"] .t-numeral,
+[dir="rtl"] .t-h3 em,
+[dir="rtl"] .t-company {
+  font-style: normal;
+}
+[dir="rtl"] .t-numeral {
+  font-style: italic; /* numerals are Latin digits, keep the slant */
+}
+bdi,
+.iso {
+  unicode-bidi: isolate;
+}
+/* numbers, arrows and units keep their own left-to-right order inside Arabic text */
+.num {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* ── Hand-drawn link underline ───────────────────────────────── */
+.link {
+  position: relative;
+  display: inline-block;
+  color: var(--ink);
+  text-decoration: none;
+  padding-bottom: 0.18em;
+  transition: color 0.15s ease;
+}
+.link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.12em;
+  height: 0.4em;
+  background: var(--rose);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='7' viewBox='0 0 92 7'%3E%3Cpath d='M0 3.6C4 1.2 8 1 12 3.2S20 5.8 25 3.3 32 .9 37 3.1s7 3.2 12 .7 8-2.6 12 .1 8 2.2 13-.2 8-1.4 13 .6' fill='none' stroke='black' stroke-width='1.35' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-x left center / 92px 7px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='7' viewBox='0 0 92 7'%3E%3Cpath d='M0 3.6C4 1.2 8 1 12 3.2S20 5.8 25 3.3 32 .9 37 3.1s7 3.2 12 .7 8-2.6 12 .1 8 2.2 13-.2 8-1.4 13 .6' fill='none' stroke='black' stroke-width='1.35' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-x left center / 92px 7px;
+}
+.link:hover {
+  color: var(--rose);
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65em;
+  padding: 0.85rem 1.35rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: none !important;
+}
+.btn-primary {
+  background: var(--rose);
+  color: var(--on-rose);
+}
+.btn-primary:hover {
+  background: var(--rose-hover);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+[dir="rtl"] .btn-primary:hover {
+  transform: translate(2px, -2px);
+  box-shadow: -4px 4px 0 var(--ink);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.btn-secondary:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.btn-ghost:hover {
+  color: var(--rose);
+}
+.btn-ghost .arrow {
+  transition: transform 0.18s ease;
+}
+.btn-ghost:hover .arrow {
+  transform: translateX(4px);
+}
+[dir="rtl"] .btn-ghost:hover .arrow {
+  transform: translateX(-4px);
+}
+
+/* ── Chips ───────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ink);
+  background: transparent;
+  white-space: nowrap;
+}
+.chip-rose {
+  background: var(--rose-wash);
+  border-color: transparent;
+}
+.chip-sage {
+  background: var(--sage-wash);
+  border-color: transparent;
+}
+button.chip {
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+button.chip:hover {
+  border-color: var(--ink);
+}
+button.chip[aria-pressed="true"],
+button.chip[aria-selected="true"] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ── Hairlines & sections ────────────────────────────────────── */
+.section {
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
+  border-top: 1px solid var(--rule);
+}
+.hatch {
+  background-color: var(--paper-2);
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--rule) 0 1px,
+    transparent 1px 8px
+  );
+}
+
+/* ── Project card ────────────────────────────────────────────── */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+.card:hover,
+.card:focus-within {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--rose-wash);
+  border-color: var(--rule-strong);
+}
+[dir="rtl"] .card:hover,
+[dir="rtl"] .card:focus-within {
+  transform: translate(3px, -3px);
+  box-shadow: -6px 6px 0 var(--rose-wash);
+}
+.card .go {
+  display: inline-block;
+  color: var(--rose);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.18s ease;
+}
+.card:hover .go,
+.card:focus-within .go {
+  opacity: 1;
+  transform: none;
+}
+
+/* line illustrations on the hatch plates */
+.art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.art .s {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.art .p {
+  fill: var(--card);
+  stroke: var(--ink-2);
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+}
+.art .r {
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.art .fr {
+  fill: var(--rose);
+}
+.art .fw {
+  fill: var(--rose-wash);
+  stroke: var(--rose);
+  stroke-width: 1;
+}
+.art .fs {
+  fill: var(--sage-wash);
+  stroke: var(--sage);
+  stroke-width: 1.25;
+}
+.art .sg {
+  fill: none;
+  stroke: var(--sage);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.art text {
+  fill: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+}
+.art text.serif {
+  fill: var(--ink);
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+}
+
+/* ── Timeline ────────────────────────────────────────────────── */
+.tl {
+  position: relative;
+}
+.tl-item {
+  position: relative;
+  padding-bottom: 2.75rem;
+}
+.tl-item::before {
+  content: "";
+  position: absolute;
+  inset-block: 0.9rem 0;
+  inset-inline-start: 4px;
+  width: 1px;
+  background: var(--rule-strong);
+}
+.tl-item:last-child::before {
+  bottom: 2.75rem;
+}
+.tl-node {
+  position: absolute;
+  top: 0.55rem;
+  inset-inline-start: 0;
+  width: 9px;
+  height: 9px;
+  background: var(--paper);
+  border: 1px solid var(--rose);
+  transform: rotate(45deg);
+}
+.tl-body {
+  padding-inline-start: 2rem;
+}
+@media (min-width: 768px) {
+  .tl-item {
+    display: grid;
+    grid-template-columns: var(--date-col) 1fr;
+  }
+  .tl-item::before {
+    inset-inline-start: calc(var(--date-col) + 4px);
+  }
+  .tl-node {
+    inset-inline-start: var(--date-col);
+  }
+  .tl-date {
+    padding-top: 0.2rem;
+  }
+  .tl-body {
+    padding-inline-start: 2.25rem;
+  }
+}
+.dash-list li {
+  position: relative;
+  padding-inline-start: 1.5rem;
+}
+.dash-list li::before {
+  content: "—";
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--rose);
+}
+
+/* ── Range slider (Khatt demo) ───────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 1px;
+  background: var(--rule-strong);
+}
+input[type="range"]::-moz-range-track {
+  height: 1px;
+  background: var(--rule-strong);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  background: var(--rose);
+  border: 0;
+  border-radius: 1px;
+  transform: rotate(45deg) scale(0.8);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  background: var(--rose);
+  border: 0;
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+/* ── Motion ──────────────────────────────────────────────────── */
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .settle {
+    animation: settle 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  .pen {
+    animation: draw 0.9s 0.9s cubic-bezier(0.5, 0, 0.2, 1) both;
+  }
+  [dir="rtl"] .pen {
+    animation-name: draw-rtl;
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress {
+      animation: grow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@keyframes draw-rtl {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.progress {
+  transform-origin: left center;
+}
+[dir="rtl"] .progress {
+  transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Print: the CV on paper ──────────────────────────────────── */
+@media print {
+  header,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .section {
+    break-inside: avoid-page;
+  }
 }

@@ -1,9 +1,17 @@
-import { cv } from "@/data/cv";
+"use client";
+
+import { useI18n } from "./I18n";
 
 export default function Footer() {
+  const { ui } = useI18n();
   return (
-    <footer className="border-t border-gray-200 py-8 text-center text-sm text-gray-500">
-      © {new Date().getFullYear()} {cv.name}
+    <footer className="border-t border-ink">
+      <div className="wrap flex flex-col gap-3 py-8 sm:flex-row sm:items-baseline sm:justify-between">
+        <span className="font-serif text-xl italic text-rose">{ui.footer.sign}</span>
+        <p className="label">
+          © {new Date().getFullYear()} · {ui.footer.colophon}
+        </p>
+      </div>
     </footer>
   );
 }

@@ -1,27 +1,81 @@
-import { Inter } from "next/font/google";
+import { Amiri, Fraunces, IBM_Plex_Mono, IBM_Plex_Sans_Arabic, Instrument_Sans } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { I18nProvider } from "@/components/I18n";
 import { cv } from "@/data/cv";
 import "./globals.css";
 
-// TODO: pick a font that fits your style.
-// Arabic site? Try IBM_Plex_Sans_Arabic with subsets: ["arabic"].
-const font = Inter({ subsets: ["latin"] });
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  axes: ["opsz", "SOFT", "WONK"],
+  style: ["normal", "italic"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+const instrument = Instrument_Sans({
+  subsets: ["latin"],
+  variable: "--font-instrument",
+  display: "swap",
+});
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
+// Arabic faces only download when an Arabic glyph is actually on screen
+const amiri = Amiri({
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-amiri",
+  display: "swap",
+  preload: false,
+});
+const plexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-arabic",
+  display: "swap",
+  preload: false,
+});
 
-// Shown in the browser tab, on Google, and in link previews.
 export const metadata = {
-  title: `${cv.name} | Portfolio`,
+  title: `${cv.name} · ${cv.title}`,
   description: cv.summary,
+  openGraph: {
+    title: `${cv.name} · ${cv.title}`,
+    description: cv.about.lead,
+    type: "website",
+  },
 };
 
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f6f1ea" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1418" },
+  ],
+};
+
+// Runs before first paint so the page never flashes the wrong theme.
+const bootTheme = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({ children }) {
+  const fonts = [fraunces, instrument, plexMono, amiri, plexArabic].map((f) => f.variable).join(" ");
+
   return (
-    // Building an Arabic version? Use lang="ar" dir="rtl".
-    <html lang="en">
-      <body className={`${font.className} flex min-h-screen flex-col`}>
-        <Navbar />
-        <main className="mx-auto w-full max-w-4xl flex-1 px-6">{children}</main>
-        <Footer />
+    <html lang="en" dir="ltr" data-theme="light" className={fonts} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: bootTheme }} />
+      </head>
+      <body className="flex min-h-screen flex-col">
+        <I18nProvider>
+          <Navbar />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </I18nProvider>
       </body>
     </html>
   );
