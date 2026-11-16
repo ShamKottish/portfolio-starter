@@ -241,7 +241,7 @@ export default function Recognition() {
       <div
         role="tablist"
         aria-label={ui.recognition.title}
-        className="-mx-5 mb-8 flex gap-6 overflow-x-auto border-b border-rule px-5 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
+        className="mb-8 flex flex-wrap gap-x-6 gap-y-1 border-b border-rule"
         onKeyDown={onKeyDown}
       >
         {TABS.map((id) => {

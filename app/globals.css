@@ -61,6 +61,12 @@
 }
 
 /* ── Base ────────────────────────────────────────────────────── */
+html,
+body {
+  /* nothing should ever make the page wider than the screen (iOS Safari zooms out if it does) */
+  overflow-x: clip;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
